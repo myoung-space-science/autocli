@@ -16,7 +16,7 @@ def run(this: Callable):
         try:
             name, annotation = line.split(':')
             if name.strip() in parameters:
-                import pdb; pdb.set_trace()
+                pass
                 # From here: index all names provided in the docstring, then use
                 # that information to extract parameter descriptions.
         except ValueError:
