@@ -5,12 +5,22 @@ from typing import *
 
 def run(this: Callable):
     """Provide a CLI to a callable."""
+    lines = this.__doc__.split('\n')
     parser = argparse.ArgumentParser(
-        description=this.__doc__,
+        description=lines[0].strip(),
         formatter_class=argparse.RawTextHelpFormatter,
     )
     signature = inspect.signature(this)
     parameters = signature.parameters
+    for line in lines:
+        try:
+            name, annotation = line.split(':')
+            if name.strip() in parameters:
+                import pdb; pdb.set_trace()
+                # From here: index all names provided in the docstring, then use
+                # that information to extract parameter descriptions.
+        except ValueError:
+            pass
     for parameter in parameters.values():
         if parameter.default is signature.empty:
             name = f'{parameter.name}'
