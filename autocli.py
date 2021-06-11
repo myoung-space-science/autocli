@@ -18,7 +18,7 @@ class DocString:
 def run(this: Callable):
     """Provide a CLI to a callable."""
     lines = this.__doc__.split('\n')
-    docstring = DocString(this.__doc__)
+    docstring = DocString(inspect.getdoc(this))
     parser = argparse.ArgumentParser(
         description=docstring.summary,
         formatter_class=argparse.RawTextHelpFormatter,
