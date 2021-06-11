@@ -3,11 +3,24 @@ import inspect
 from typing import *
 
 
+class DocString:
+    """A class to hold information about a given docstring."""
+    def __init__(self, docstring: str) -> None:
+        self.raw = docstring
+        self._lines = docstring.split('\n')
+
+    @property
+    def summary(self) -> str:
+        """The docstring summary."""
+        return self._lines[0].strip()
+
+
 def run(this: Callable):
     """Provide a CLI to a callable."""
     lines = this.__doc__.split('\n')
+    docstring = DocString(this.__doc__)
     parser = argparse.ArgumentParser(
-        description=lines[0].strip(),
+        description=docstring.summary,
         formatter_class=argparse.RawTextHelpFormatter,
     )
     signature = inspect.signature(this)
