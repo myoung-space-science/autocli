@@ -12,15 +12,7 @@ def run(this: Callable):
     )
     signature = inspect.signature(this)
     parameters = signature.parameters
-    for line in lines:
-        try:
-            name, annotation = line.split(':')
-            if name.strip() in parameters:
-                pass
-                # From here: index all names provided in the docstring, then use
-                # that information to extract parameter descriptions.
-        except ValueError:
-            pass
+    descriptions = parse_descriptions(parameters, lines)
     for parameter in parameters.values():
         if parameter.default is signature.empty:
             name = f'{parameter.name}'
@@ -28,10 +20,23 @@ def run(this: Callable):
             name = f'--{parameter.name}'
         parser.add_argument(
             name,
+            help=descriptions[parameter.name],
             type=get_type(parameter)
         )
     args = parser.parse_args()
     this(**vars(args))
+
+
+def parse_descriptions(
+    parameters: Iterable[inspect.Parameter],
+    doclines: Iterable[str],
+) -> Dict[str, str]:
+    """Parse parameter descriptions from the docstring"""
+    descriptions = {name: '<no description available>' for name in parameters}
+    for line in doclines:
+        if line.strip() in parameters or line.split(':')[0] in parameters:
+            print(line)
+    return descriptions
 
 
 type_map = {
