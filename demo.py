@@ -1,4 +1,5 @@
 import autocli
+import matplotlib.pyplot as plt
 
 
 def main(
@@ -8,24 +9,17 @@ def main(
 ) -> None:
     """Print the user values.
     
-    Positional Parameters
-    ---------------------
+    Parameters
+    ----------
     int_arg : int
-
-    an integer positional argument
-
+        an integer positional argument
     str_arg : str
-
-    a string positional argument
-
-    Keyword Parameters
-    ------------------
+        a string positional argument
     float_kwarg : float
+        a float keyword argument
 
-    a float keyword argument
-
-    Return
-    ------
+    Returns
+    -------
     None
     """
     print(f"{int_arg=}")
