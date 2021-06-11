@@ -32,11 +32,7 @@ def parse_descriptions(
     doclines: Iterable[str],
 ) -> Dict[str, str]:
     """Parse parameter descriptions from the docstring"""
-    descriptions = {name: '<no description available>' for name in parameters}
-    for line in doclines:
-        if line.strip() in parameters or line.split(':')[0] in parameters:
-            print(line)
-    return descriptions
+    return {name: '<no description available>' for name in parameters}
 
 
 type_map = {
