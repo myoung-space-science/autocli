@@ -44,13 +44,13 @@ class DocString:
         ]
 
 
-def run(this: Callable):
+def run(this: Callable, **kwargs):
     """Provide a CLI to a callable."""
-    lines = this.__doc__.split('\n')
     docstring = DocString(inspect.getdoc(this))
     parser = argparse.ArgumentParser(
         description=docstring.summary,
         formatter_class=argparse.RawTextHelpFormatter,
+        **kwargs
     )
     signature = inspect.signature(this)
     parameters = signature.parameters
