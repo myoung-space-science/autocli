@@ -4,17 +4,24 @@ int_arg=1
 str_arg=cat
 float_kwarg=2.3
 
-echo "BASE HELP"
-python ./base.py -h
+python ./base.py -h > base.log
+python ./demo.py -h > demo.log
+diff base.log demo.log
+if [ $? != 0 ]; then
+    echo "Help comparison failed"
+    exit 1
+else
+    rm -f base.log demo.log
+fi
 
-echo
-echo "DEMO HELP"
-python ./demo.py -h
+python ./base.py ${int_arg} ${str_arg} --float_kwarg ${float_kwarg} > base.log
+python ./demo.py ${int_arg} ${str_arg} --float_kwarg ${float_kwarg} > demo.log
+diff base.log demo.log
+if [ $? != 0 ]; then
+    echo "Result comparison failed"
+    exit 1
+else
+    rm -f base.log demo.log
+fi
 
-echo
-echo "BASE RESULT"
-python ./base.py ${int_arg} ${str_arg} --float_kwarg ${float_kwarg}
-
-echo
-echo "DEMO RESULT"
-python ./demo.py ${int_arg} ${str_arg} --float_kwarg ${float_kwarg}
+echo "All tests passed"
