@@ -37,11 +37,24 @@ class DocString:
 
     def _get_sections(self) -> Dict[str, List[str]]:
         """The parsed sections of the docstring."""
-        headings = []
-        for i, line in enumerate(self._lines):
-            if set(list(line.strip())) == {'-'}:
-                headings.append((i, self._lines[i-1].strip()))
+        breaks = self._get_section_breaks()
+        indices = [b[0] for b in breaks]
+        headings = [b[1] for b in breaks]
+        sections = {}
+        for i, heading in enumerate(headings):
+            head = indices[i]
+            stop = indices[i+1] - 1 if head != indices[-1] else None
+            start = head + 1
+            sections[heading] = self._lines[start:stop]
+        return sections
 
+    def _get_section_breaks(self) -> list:
+        """Get a list of section breaks."""
+        return [
+            (i, self._lines[i - 1].strip())
+            for i, line in enumerate(self._lines)
+            if set(list(line.strip())) == {'-'}
+        ]
 
 def run(this: Callable):
     """Provide a CLI to a callable."""
