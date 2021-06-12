@@ -5,14 +5,42 @@ from typing import *
 
 class DocString:
     """A class to hold information about a given docstring."""
+    headings = [
+        'Parameters',
+        'Returns',
+        'Yields',
+        'Receives',
+        'Other Parameters',
+        'Raises',
+        'Warns',
+        'See Also',
+        'Notes',
+        'References',
+        'Examples',
+    ]
     def __init__(self, docstring: str) -> None:
         self.raw = docstring
         self._lines = docstring.split('\n')
+        self._sections = None
 
     @property
     def summary(self) -> str:
         """The docstring summary."""
         return self._lines[0].strip()
+
+    @property
+    def sections(self) -> Dict[str, List[str]]:
+        """The parsed sections of the docstring."""
+        if self._sections is None:
+            self._sections = self._get_sections()
+        return self._sections
+
+    def _get_sections(self) -> Dict[str, List[str]]:
+        """The parsed sections of the docstring."""
+        headings = []
+        for i, line in enumerate(self._lines):
+            if set(list(line.strip())) == {'-'}:
+                headings.append((i, self._lines[i-1].strip()))
 
 
 def run(this: Callable):
