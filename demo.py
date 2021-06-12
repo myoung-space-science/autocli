@@ -12,7 +12,8 @@ def main(
     Parameters
     ----------
     int_arg : int
-        an integer positional argument
+        an integer positional argument that can be used to do a good thing and
+        count the best stuff
     str_arg : str
         a string positional argument
     float_kwarg : float
