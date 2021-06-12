@@ -29,4 +29,4 @@ def main(
 
 
 if __name__ == "__main__":
-    autocli.run(main)
+    autocli.run(main, prog='prog')

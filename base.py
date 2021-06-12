@@ -16,6 +16,7 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(
         description=main.__doc__,
         formatter_class=argparse.RawTextHelpFormatter,
+        prog='prog',
     )
     p.add_argument(
         'int_arg',
