@@ -5,19 +5,6 @@ from typing import *
 
 class DocString:
     """A class to hold information about a given docstring."""
-    headings = [
-        'Parameters',
-        'Returns',
-        'Yields',
-        'Receives',
-        'Other Parameters',
-        'Raises',
-        'Warns',
-        'See Also',
-        'Notes',
-        'References',
-        'Examples',
-    ]
     def __init__(self, docstring: str) -> None:
         self.raw = docstring
         self._lines = docstring.split('\n')
