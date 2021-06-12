@@ -19,7 +19,10 @@ if __name__ == '__main__':
     )
     p.add_argument(
         'int_arg',
-        help="an integer positional argument",
+        help=(
+            "an integer positional argument that can be used to do a good thing"
+            " and\ncount the best stuff"
+        ),
         type=int,
     )
     p.add_argument(
