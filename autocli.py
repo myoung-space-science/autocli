@@ -56,6 +56,7 @@ class DocString:
             if set(list(line.strip())) == {'-'}
         ]
 
+
 def run(this: Callable):
     """Provide a CLI to a callable."""
     lines = this.__doc__.split('\n')
@@ -66,7 +67,7 @@ def run(this: Callable):
     )
     signature = inspect.signature(this)
     parameters = signature.parameters
-    descriptions = parse_descriptions(parameters, lines)
+    descriptions = parse_descriptions(parameters, docstring)
     for parameter in parameters.values():
         if parameter.default is signature.empty:
             name = f'{parameter.name}'
@@ -83,10 +84,26 @@ def run(this: Callable):
 
 def parse_descriptions(
     parameters: Iterable[inspect.Parameter],
-    doclines: Iterable[str],
+    docstring: DocString,
 ) -> Dict[str, str]:
     """Parse parameter descriptions from the docstring"""
-    return {name: '<no description available>' for name in parameters}
+    if 'Parameters' not in docstring.sections:
+        return {name: '<no description available>' for name in parameters}
+    descriptions = {}
+    given = docstring.sections['Parameters']
+    names = []
+    for i, line in enumerate(given):
+        name = line.split(':')[0].strip()
+        if name in parameters:
+            names.append((i, name))
+    for i, (start, name) in enumerate(names):
+        try:
+            stop = names[i+1][0]
+        except IndexError:
+            stop = None
+        text = '\n'.join(s.strip() for s in given[start+1:stop])
+        descriptions[name] = text.rstrip('\n')
+    return descriptions
 
 
 type_map = {
